@@ -1,0 +1,6 @@
+[package]
+name = "convex_hull"
+version = "0.1.0"
+authors = ["Benjamin Boxler <benjaminboxler@gmail.com>"]
+
+[dependencies]
