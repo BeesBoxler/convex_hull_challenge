@@ -1,9 +1,8 @@
 extern crate rand;
 
-mod types;
+mod utilities;
 use rand::Rng;
-
-use types::Point as Point;
+use utilities::Point as Point;
 
 fn generate_points(count:i32) -> Vec<Point> {
     let mut rng = rand::thread_rng();
@@ -18,17 +17,46 @@ fn generate_points(count:i32) -> Vec<Point> {
 
 fn main() {
 
+    let mut path: Vec<Point> = Vec::new();
 
-    let p1 = Point { x: 12, y: 10};
-    let p2 = Point { x: 102, y: 10};
-    let p3 = Point { x: 102, y: 100};
+    // Let's make a point (badum tss)
+    let mut points = generate_points(16);
+    for p in &points {
+        println!("{}", p)
+    }
 
-    println!("{}",p1.angle_with(&p2));
-    println!("{}",p1.direction_from(&p2, &p3));
+    // Lets find the bottom-most point
+    let mut min = points[0].clone();
+    for p in &points {
+        if p.y < min.y {
+            min = *p;
+        } else if p.y == min.y {
+            if p.x < min.x {
+                min = *p
+            }
+        }
+    }
 
-    let points = generate_points(16);
-    
-    for point in &points {
-        println!("{}", point)
+    path.push(min);
+    println!("Minimum point: {}", min);
+
+
+    //and sort all the points by angle made with point (min) and the x axis
+
+    utilities::sort_by_angle(&mut points, min);
+
+    path.push(points[0].clone());
+    path.push(points[1].clone());
+    path.push(points[2].clone());
+    for (i,p) in points[..].into_iter().enumerate() {
+        if i < 3 { continue }
+        match p.direction_from(&path[path.len()-2], &path[path.len()-1]) {
+            utilities::CrossProduct::Left => { path.push(*p)},
+            _ => {continue}
+        }
+    }
+
+    for p in path {
+        println!("{}", p)
     }
 }
