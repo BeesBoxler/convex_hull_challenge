@@ -77,7 +77,7 @@ impl Clone for Point {
 // Display points (for println)
 impl fmt::Display for Point {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "({},{})", self.x, self.y)
+        write!(f, "{},{}", self.x, self.y)
     }
 }
 
@@ -90,7 +90,7 @@ pub fn sort_by_angle(a: &mut Vec<Point>, p: Point) {
     loop {
         let mut swapped = false;
         for i in 1..n-1 {
-            if p.angle_with(&a[i-1]) < p.angle_with(&a[i]) {
+            if p.angle_with(&a[i-1]) > p.angle_with(&a[i]) {
                 a.swap(i-1, i);
                 swapped = true
             }

@@ -36,8 +36,6 @@ fn main() {
             }
         }
     }
-
-    path.push(min);
     println!("Minimum point: {}", min);
 
 
@@ -55,9 +53,11 @@ fn main() {
     
     for (i,p) in points[..].into_iter().enumerate() {
         if i < 3 { continue }
-        match p.direction_from(&path[path.len()-2], &path[path.len()-1]) {
-            utilities::CrossProduct::Right => { path.push(*p)},
-            _ => {continue}
+        loop {
+            match p.direction_from(&path[path.len()-2], &path[path.len()-1]) {
+                utilities::CrossProduct::Left => { path.push(*p); break},
+                _ => { path.pop(); }
+            }
         }
     }
 
