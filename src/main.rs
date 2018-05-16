@@ -44,6 +44,8 @@ fn main() {
 
     utilities::sort_by_angle(&mut points, min);
 
+    points.push(min); //We want it to finish on the same point
+
     //Add the first three points to the path
 
     for i in 0..3 {
