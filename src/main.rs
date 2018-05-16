@@ -21,6 +21,7 @@ fn main() {
 
     // Let's make a point (badum tss)
     let mut points = generate_points(16);
+    println!("Generated points:" );
     for p in &points {
         println!("{}", p)
     }
@@ -36,15 +37,13 @@ fn main() {
             }
         }
     }
-    println!("Minimum point: {}", min);
-
     path.push(min);
 
 
     //and sort all the points by angle made with point (min) and the x axis
 
     utilities::sort_by_angle(&mut points, min);
-    
+
     //Add the first three points to the path
 
     for i in 0..3 {
@@ -62,7 +61,8 @@ fn main() {
             }
         }
     }
-
+    println!();
+    println!("Path:" );
     for p in path {
         println!("{}", p) //Print the path
     }

@@ -76,7 +76,7 @@ impl Clone for Point {
 // Display points (for println)
 impl fmt::Display for Point {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{},{}", self.x, self.y)
+        write!(f, "({},{})", self.x, self.y)
     }
 }
 
