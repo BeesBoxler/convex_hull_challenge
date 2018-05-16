@@ -1,13 +1,18 @@
 use std::fmt;
 use std::f64;
 
+
+// The cross product is the result of (x3-x1)(y2-y1) - (y3-y1)(x2-x1)
+// If the result is positive, p3 lies to the left of p1->p2, 0 means the
+// point is collinear and a negative value shows the point lies to the right.
+// [The wikipedia is less than useful](https://en.m.wikipedia.org/wiki/Cross_product)
 pub enum CrossProduct {
     Left,
     Right,
     Collinear
 }
 
-// Display CrossProduct enum
+// Display CrossProduct in a friendly way (This is only for debugging)
 impl fmt::Display for CrossProduct {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let printable = match *self {
@@ -19,6 +24,8 @@ impl fmt::Display for CrossProduct {
     }
 }
 
+
+// Are two cross products equal? ie. Are they both left or right?
 impl PartialEq for CrossProduct {
     fn eq(&self, other: &CrossProduct) -> bool {
         self == other
@@ -36,8 +43,7 @@ impl Point {
     // Compare the angle with another point against the x axis
     pub fn angle_with(&self, p: &Point) -> f64{
         if self.x == p.x { return  f64::consts::PI / 2.0 }
-        // println!("atan({}/{})", p.y-self.y, p.x-self.x);
-        return ((p.y-self.y) as f64).atan2((p.x-self.x) as f64)
+        return ((p.y-self.y) as f64).atan2((p.x-self.x) as f64) // Using atan2 because atan kept giving incorrect results
     }
 
     // Is a point going to turn left, right, or be collinear?
@@ -77,6 +83,8 @@ impl fmt::Display for Point {
 
 
 // Bubblesort. Because for 16 points the inefficiency isn't really going to be an issue.
+// If we were working with more than 16 points, this could be implimented as a quicksort
+// and the angle could be cached.
 pub fn sort_by_angle(a: &mut Vec<Point>, p: Point) {
     let mut n = a.len();
     loop {
