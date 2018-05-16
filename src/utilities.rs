@@ -5,7 +5,6 @@ use std::f64;
 // The cross product is the result of (x3-x1)(y2-y1) - (y3-y1)(x2-x1)
 // If the result is positive, p3 lies to the left of p1->p2, 0 means the
 // point is collinear and a negative value shows the point lies to the right.
-// [The wikipedia is less than useful](https://en.m.wikipedia.org/wiki/Cross_product)
 pub enum CrossProduct {
     Left,
     Right,
@@ -94,7 +93,21 @@ pub fn sort_by_angle(a: &mut Vec<Point>, p: Point) {
                 a.swap(i-1, i);
                 swapped = true
             }
+
+            // If two points have the same angle, we only wnt the further of the two.
+            if p.angle_with(&a[i-1]) == p.angle_with(&a[i]) { 
+                let r1 = ((&a[i-1].x - p.x + &a[i-1].y - p.y) as f32).sqrt();
+                let r2 = ((&a[i].x - p.x + &a[i].y - p.y) as f32).sqrt();
+                if r1 != 0.0 && r2 != 0.0 {
+                    if r1 < r2 {
+                        a.remove(i-1); 
+                    } else {
+                        a.remove(i);
+                    }
+                }
+            }
         }
+
         n = n -1;
         if !swapped {
             break

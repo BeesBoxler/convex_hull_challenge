@@ -38,30 +38,32 @@ fn main() {
     }
     println!("Minimum point: {}", min);
 
+    path.push(min);
+
 
     //and sort all the points by angle made with point (min) and the x axis
 
     utilities::sort_by_angle(&mut points, min);
+    
+    //Add the first three points to the path
 
-    path.push(points[0].clone());
-    path.push(points[1].clone());
-    path.push(points[2].clone());
+    for i in 0..3 {
+        path.push(points[i].clone());
+    }
 
-    // At the moment this only keeps turning right. I need to check if there are any
-    // points to the left. This is also backwards compared to the actual algorithm which
-    // works counter-clockwise as opposed to this which works clockwise. 
+    // Graham Scan. 
     
     for (i,p) in points[..].into_iter().enumerate() {
-        if i < 3 { continue }
+        if i < 3 { continue } //Scip the points we've already added.
         loop {
             match p.direction_from(&path[path.len()-2], &path[path.len()-1]) {
-                utilities::CrossProduct::Left => { path.push(*p); break},
-                _ => { path.pop(); }
+                utilities::CrossProduct::Left => { path.push(*p); break}, //if it's a left turn, add it to the stack and continue
+                _ => { path.pop(); } //Otherwise remove the topmost item from the stack and try again
             }
         }
     }
 
     for p in path {
-        println!("{}", p)
+        println!("{}", p) //Print the path
     }
 }
